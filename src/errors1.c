@@ -27,3 +27,9 @@ void line_not_valid(int n) {
     exit(101);
 }
 
+void file_is_empty_error(char **argv) {
+    mx_printerror("error: file ");
+    mx_printerror(argv[1]);
+    mx_printerror(" is empty\n");
+    exit(101);
+}
