@@ -11,18 +11,19 @@ void check_argc_quantity(int argc) {
     }
 }
 
-int check_if_file_exists(char **argv) {
-
-    int fd;
-
-    fd = open(argv[1], O_RDONLY);
-
+void check_if_file_exists(char **argv, int fd) {
     if (fd < 0) {
         mx_printerror("error: file ");
         mx_printerror(argv[1]);
         mx_printerror(" does not exist\n");
+        exit(101);
     }
+}
 
-    return fd;
+void line_not_valid(int n) {
+    mx_printerror("error: line ");
+    mx_printerror(mx_itoa(n));
+    mx_printerror(" is not valid\n");
+    exit(101);
 }
 
