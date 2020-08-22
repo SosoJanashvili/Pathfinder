@@ -50,6 +50,7 @@ void insert_to_array(char **islands, char *island, int size) {
 
     while (islands[i]) {
         if (mx_strcmp(islands[i], island) == 0) {
+            free(island);
             return;
         }
         i++;
@@ -155,19 +156,21 @@ void fill_matrix(int *graph, int size, char **islands, int fd) {
 
         island1 = get_island_1(line, i + 2);
         island2 = get_island_2(line, i + 2);
-        distance = get_distance(line, i + 2);
 
-        insert_to_array(islands, island1, size);
-        insert_to_array(islands, island2, size);
+        insert_to_array(islands, mx_strdup(island1), size);
+        insert_to_array(islands, mx_strdup(island2), size);
 
-//        free(island1);
-//        free(island2);
+
+
+        distance = get_distance(line, i + 2);                 // get distance between bridges
 
         send_num_to_matrix(islands,island1,island2, &distance, graph, size);
 
         check_sum_of_bridges(sum_of_bridges, distance);
         sum_of_bridges += distance;
 
+        free(island1);
+        free(island2);
         free(line);
     }
 
