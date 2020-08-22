@@ -28,6 +28,7 @@ int parse_first_line(int fd, char **argv) {
     if (v_quantity < 1)
         line_not_valid_error(1);
 
+    free(s);
     return v_quantity;
 }
 
@@ -43,21 +44,14 @@ void prefill_matrix(int *graph, int size) {
     }
 }
 
-static bool contains_island(char **islands, char *island, int size) {
-    for (int i = 0; i < size; i++) {
-        if (mx_strcmp(islands[i], island) == 0)
-            return true;
-    }
-    return false;
-}
-
 void insert_to_array(char **islands, char *island, int size) {
     int i = 0;
     int len = 0;
 
     while (islands[i]) {
-        if (mx_strcmp(islands[i], island) == 0)
+        if (mx_strcmp(islands[i], island) == 0) {
             return;
+        }
         i++;
     }
 
@@ -96,12 +90,15 @@ static void send_num_to_matrix(char **islands, char*isl1, char *isl2, int *dista
 
 static char *get_island_1(char *line, int line_num) {
     int i = 0;
+    char *str = NULL;
 
     for (; line[i] != '-'; i++)
         if (!mx_isalpha(line[i]))
             line_not_valid_error(line_num);
 
-    return mx_strsub(line, 0, i);
+    str = mx_strsub(line, 0, i);
+
+    return str;
 }
 
 static char *get_island_2(char *line, int line_num) {
@@ -163,11 +160,17 @@ void fill_matrix(int *graph, int size, char **islands, int fd) {
         insert_to_array(islands, island1, size);
         insert_to_array(islands, island2, size);
 
+//        free(island1);
+//        free(island2);
+
         send_num_to_matrix(islands,island1,island2, &distance, graph, size);
 
         check_sum_of_bridges(sum_of_bridges, distance);
         sum_of_bridges += distance;
+
+        free(line);
     }
 
+    //free(line);
     error_inv_num_of_islands2(size, islands);
 }

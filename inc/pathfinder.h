@@ -5,6 +5,8 @@
 #ifndef PATHFINDER_PATHFINDER_H
 #define PATHFINDER_PATHFINDER_H
 
+#include <limits.h>
+
 // Macros
 #define INF 99
 #define MX_MIN(x, y) ((x < y) ? x : y)
