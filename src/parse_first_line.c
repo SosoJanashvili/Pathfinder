@@ -51,25 +51,51 @@ static bool contains_island(char **islands, char *island, int size) {
     return false;
 }
 
-static int parse_line() {
+static void parse_line(char *line, char *isl1, char *isl2, int *dis, int line_num) {
 
-    return 0;
+    int i = 0;
+    int j = 0;
+    char *temp = NULL;
+
+    for (; line[i] != '-'; i++)
+        if (!mx_isalpha(line[i]))
+            line_not_valid_error(line_num);
+
+    isl1 = mx_strsub(line, 0, i);
+
+    j = i + 1;
+    for (i = i + 1; line[i] != ','; i++)
+        if (!mx_isalpha(line[i]))
+            line_not_valid_error(line_num);
+
+    isl2 = mx_strsub(line, j, i - j);
+
+    j = i + 1;
+    for (i = i + 1; line[i] != '\0'; i++)
+        if (!mx_isdigit(line[i]))
+            line_not_valid_error(line_num);
+
+    temp = mx_strsub(line, j, i - j);
+    *dis = mx_atoi(temp);
+    free(temp);
 }
 
 void fill_matrix(int *graph, int size, char **islands, int fd) {
 
     char *island1 = NULL;
     char *island2 = NULL;
-    int *distance = NULL;
+    int distance;
     char *line = NULL;
     int sum_of_bridges = 0;
 
     for (int i = 0; i < size; i++) {
 
         mx_read_line(&line, 1, '\n', fd);
-        check_line_for_errors(line);
+        check_line_for_errors(line);                                  // note
+        parse_line(line, island1, island2, &distance, i + 2);
 
+        check_sum_of_bridges(sum_of_bridges, distance);
+        sum_of_bridges += distance;
     }
 
-    int x;
 }
