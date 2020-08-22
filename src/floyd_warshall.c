@@ -34,5 +34,9 @@ void floyd_warshall(int *graph, int size) {
         }
     }
     print_graph(dis, size);
-    //free *next *dis
+
+    if (dis)
+        free(dis);
+    if (next)
+        free(next);
 }
