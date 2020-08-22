@@ -15,7 +15,7 @@ int mx_atoi(const char *str) {
         result = (result * 10) + (str[j] - 48);
     }
 
-    if (str[i - 1] == '-') {
+    if (i > 1 && str[i - 1] == '-') {
         return -result;
     }
     return result;
