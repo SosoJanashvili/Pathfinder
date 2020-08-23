@@ -18,7 +18,7 @@ static void initialize(int *graph, int *dis, int *next, int size) {
     }
 }
 
-void floyd_warshall(int *graph, int size) {
+void floyd_warshall(int *graph, int size, char **islands) {
 
     int *dis = (int *)malloc(size * size * sizeof(int));
     int *next = (int *)malloc(size * size * sizeof(int));
@@ -44,7 +44,7 @@ void floyd_warshall(int *graph, int size) {
     print_graph(next, size);
     mx_printstr("----------------------\n");
 
-    print_routes(dis, next, size);
+    print_routes(dis, next, size, islands);
 
     if (dis)
         free(dis);

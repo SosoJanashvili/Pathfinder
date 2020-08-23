@@ -13,6 +13,23 @@ void print_list(t_list *head) {
     mx_printstr("NULL\n");
 }
 
+static void print_path() {
+
+}
+
+static void print_route(t_list *head, char **islands) {
+    mx_printstr("HEAD->");
+    for (t_list *cur = head; cur != NULL; cur = cur->next) {
+        mx_printstr(islands[*(int *)(cur->data)]);
+        mx_printstr("->");
+    }
+    mx_printstr("NULL\n");
+}
+
+static void print_distance() {
+
+}
+
 void delete_linked_list(t_list *head) {
     t_list *cur = NULL;
     while (head->next != NULL) {
@@ -40,24 +57,24 @@ static t_list *construct_path(int *dis, int *next, int size, int a, int b) {
 //    }
 //    return path;
 
-    int *u = &a;
-    int *v = &b;
+    int u = a;
+    int v = b;
 
-    t_list *head = mx_create_node(u);
+    t_list *head = mx_create_node(&u);
 
-    while (*u != *v) {
-        *u = *(next + (*u * size) + *v);
-        mx_push_back(&head, u);
+    while (u != v) {
+        u = *(next + (u * size) + v);
+        mx_push_back(&head, &u);
     }
 
     return head;
 }
 
-void print_routes(int *dis, int *next, int size) {
+void print_routes(int *dis, int *next, int size, char **islands) {
 
     t_list *head = construct_path(dis, next, size, 0, 3);
 
-    print_list(head);
+    print_route(head, islands);
 
     delete_linked_list(head);
 

@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     //fill_graph(graph, size);
     print_graph(graph, size);
     mx_printstr("----------------------\n");
-    floyd_warshall(graph, size);
+    floyd_warshall(graph, size, islands);
 
 //    char c = '-';
 //    mx_print_strarr(islands, &c);
