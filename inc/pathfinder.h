@@ -40,4 +40,9 @@ void fill_matrix(int *graph, int size, char **islands, int fd);
 
 void floyd_warshall(int *graph, int size);
 
+
+// Printing data
+void print_routes(int *dis, int *next);
+void print_list(t_list* head);
+
 #endif //PATHFINDER_PATHFINDER_H

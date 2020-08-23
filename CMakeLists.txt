@@ -83,5 +83,6 @@ add_executable(Pathfinder
         src/parse_first_line.c
         src/temp_file.c     # Must be removed later
         src/floyd_warshall.c
+        src/output.c
 
         )

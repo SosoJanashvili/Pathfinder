@@ -8,6 +8,12 @@ static void initialize(int *graph, int *dis, int *next, int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             *(dis + (i * size) + j) = *(graph + (i * size) + j);
+
+            if (*(graph + (i * size) + j) == INF) {
+                *(next + (i * size) + j) = -1;
+            } else {
+                *(next + (i * size) + j) = j;
+            }
         }
     }
 }
@@ -22,8 +28,8 @@ void floyd_warshall(int *graph, int size) {
     for (int k = 0; k < size; k++) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (*(dis + (i * size) + k) == INF ||
-                    *(dis + (k * size) + j) == INF)
+
+                if (*(dis + (i * size) + k) == INF || *(dis + (k * size) + j) == INF)
                     continue;
 
                 if (*(dis + (i * size) + j) > *(dis + (i * size) + k) + *(dis + (k * size) + j)) {
@@ -34,6 +40,11 @@ void floyd_warshall(int *graph, int size) {
         }
     }
     print_graph(dis, size);
+    mx_printstr("----------------------\n");
+    print_graph(next, size);
+    mx_printstr("----------------------\n");
+
+    print_routes(dis, next);
 
     if (dis)
         free(dis);

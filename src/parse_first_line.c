@@ -35,7 +35,7 @@ int parse_first_line(int fd, char **argv) {
 void prefill_matrix(int *graph, int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if ((i * size) / 4 == j) {
+            if ((i * size) / size == j) {
                 *(graph + (i * size) + j) = 0;
             } else {
                 *(graph + (i * size) + j) = INF;
@@ -160,9 +160,7 @@ void fill_matrix(int *graph, int size, char **islands, int fd) {
         insert_to_array(islands, mx_strdup(island1), size);
         insert_to_array(islands, mx_strdup(island2), size);
 
-
-
-        distance = get_distance(line, i + 2);                 // get distance between bridges
+        distance = get_distance(line, i + 2);   //get distance between bridges
 
         send_num_to_matrix(islands,island1,island2, &distance, graph, size);
 
@@ -174,6 +172,5 @@ void fill_matrix(int *graph, int size, char **islands, int fd) {
         free(line);
     }
 
-    //free(line);
     error_inv_num_of_islands2(size, islands);
 }
