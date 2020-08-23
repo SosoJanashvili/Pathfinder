@@ -5,6 +5,11 @@
 #ifndef PATHFINDER_PATHFINDER_H
 #define PATHFINDER_PATHFINDER_H
 
+typedef struct s_lst {
+    int n;
+    struct s_lst *next;
+}           t_lst;
+
 #include <limits.h>
 
 // Macros
