@@ -44,7 +44,7 @@ void floyd_warshall(int *graph, int size) {
     print_graph(next, size);
     mx_printstr("----------------------\n");
 
-    print_routes(dis, next);
+    print_routes(dis, next, size);
 
     if (dis)
         free(dis);

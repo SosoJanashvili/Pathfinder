@@ -42,7 +42,7 @@ void floyd_warshall(int *graph, int size);
 
 
 // Printing data
-void print_routes(int *dis, int *next);
+void print_routes(int *dis, int *next, int size);
 void print_list(t_list* head);
 
 #endif //PATHFINDER_PATHFINDER_H

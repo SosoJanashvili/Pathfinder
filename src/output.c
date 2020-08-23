@@ -5,24 +5,60 @@
 #include "../inc/pathfinder.h"
 
 void print_list(t_list *head) {
-    printf("HEAD->");
+    mx_printstr("HEAD->");
     for (t_list *cur = head; cur != NULL; cur = cur->next) {
-        printf("[%d]->", *(int *)(cur->data));
+        mx_printint(*(int *)(cur->data));
+        mx_printstr("->");
     }
-    printf("NULL\n");
+    mx_printstr("NULL\n");
 }
 
 void delete_linked_list(t_list *head) {
-    for (t_list *cur = head; cur != NULL; cur = cur->next) {
-        printf("[%d]->", *(int *)(cur->data));
+    t_list *cur = NULL;
+    while (head->next != NULL) {
+        cur = head;
+        head = head->next;
+        free(cur);
     }
+    free(head);
+    head = NULL; //???
 }
 
-void print_routes(int *dis, int *next) {
+static t_list *construct_path(int *dis, int *next, int size, int a, int b) {
+//    t_list *head = mx_create_node(next);
+//    mx_push_back(&head, next + 1);
+//    mx_push_back(&head, next + 2);
 
-    t_list *head = mx_create_node(next);
-    mx_push_back(&head, next + 1);
-    mx_push_back(&head, next + 2);
+    // Storing the path in a vector
+//    Vector<Integer> path = new Vector<Integer>();
+//    path.add(u);
+//
+//    while (u != v)
+//    {
+//        u = Next[u][v];
+//        path.add(u);
+//    }
+//    return path;
+
+    int *u = &a;
+    int *v = &b;
+
+    t_list *head = mx_create_node(u);
+
+    while (*u != *v) {
+        *u = *(next + (*u * size) + *v);
+        mx_push_back(&head, u);
+    }
+
+    return head;
+}
+
+void print_routes(int *dis, int *next, int size) {
+
+    t_list *head = construct_path(dis, next, size, 0, 3);
+
     print_list(head);
+
+    delete_linked_list(head);
 
 }
