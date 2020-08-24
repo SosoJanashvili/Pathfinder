@@ -39,10 +39,16 @@ void floyd_warshall(int *graph, int size, char **islands) {
             }
         }
     }
+
+    // For testing only
     print_graph(dis, size);
     mx_printstr("----------------------\n");
     print_graph(next, size);
     mx_printstr("----------------------\n");
+    char ch = ' ';
+    mx_print_strarr(islands, &ch);
+    mx_printstr("----------------------\n");
+    // End..
 
     print_routes(dis, next, size, islands);
 

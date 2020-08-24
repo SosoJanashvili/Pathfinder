@@ -13,7 +13,7 @@ typedef struct s_lst {
 #include <limits.h>
 
 // Macros
-#define INF 99
+#define INF INT_MAX
 #define MX_MIN(x, y) ((x < y) ? x : y)
 
 // To be removed later                                           !!!!!!!!!!!!!
