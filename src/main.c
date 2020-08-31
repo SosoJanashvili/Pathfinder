@@ -4,44 +4,35 @@
 
 #include "../inc/pathfinder.h"
 
-
-char **create_str_array(int size) {
-    char **arr = NULL;
-
-    if (!(arr = (char **)malloc((size + 1) * sizeof(char *))))
-        return NULL;
-
-    for (int i = 0; i < size + 1; i++)
-        arr[i] = NULL;
-
-    return arr;
-}
+static int get_fd(char **argv);
 
 int main(int argc, char **argv) {
 
-    int *graph = NULL;
-    int size;
     int fd;
-    char **islands = NULL;
+    t_data strct;
 
-    check_argc_quantity(argc);
+    mx_error_usage(argc);
     fd = get_fd(argv);
-    size = parse_first_line(fd, argv);
+    strct.size = mx_parse_first_line(fd, argv);
 
-    graph = (int *)malloc(size * size * sizeof(int));
-    islands = create_str_array(size);
+    strct.v_array = mx_alloc_str_array(strct.size);
 
-    fill_matrix(graph, size, islands, fd);
+    mx_parse_vertices(&strct, fd);
 
-    //fill_graph(graph, size);
-    print_graph(graph, size);
-    mx_printstr("----------------------\n");
-    floyd_warshall(graph, size, islands);
+    floyd_warshall(&strct);
 
-//    char c = '-';
-//    mx_print_strarr(islands, &c);
+    mx_alloc_route(&strct);
 
-    free(graph);
-    mx_del_strarr(&islands);
+    mx_print_output(&strct);
+
+    mx_clean_up(&strct);
+    close(fd);
     return 0;
+}
+
+static int get_fd(char **argv) {
+    int fd;
+    fd = open(argv[1], O_RDONLY);
+    mx_error_file_exists(argv, fd);
+    return fd;
 }

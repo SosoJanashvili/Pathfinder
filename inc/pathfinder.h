@@ -5,49 +5,58 @@
 #ifndef PATHFINDER_PATHFINDER_H
 #define PATHFINDER_PATHFINDER_H
 
-typedef struct s_lst {
-    int n;
-    struct s_lst *next;
-}           t_lst;
+typedef struct s_data {
+    char **v_array;             // String array for vertices
+    int size;                   // Quantity of vertices
+    int **graph;                // Initial matrix
+    int **dist;
+    int **route;
+}           t_data;
+
+typedef struct s_backtrack {
+    int size;
+    int *path;
+    int c;
+}           t_backtrack;
 
 #include <limits.h>
 
 // Macros
 #define INF INT_MAX
-#define MX_MIN(x, y) ((x < y) ? x : y)
 
 // To be removed later                                           !!!!!!!!!!!!!
 #include "../libmx/inc/libmx.h"
-void print_graph(int *graph, int size);
-void fill_graph_with_ones(int *graph, int size);
-void fill_graph(int *graph, int size);
-// ----------------------------------
-
-
-void check_for_errors(int fd, int argc, char **argv);
 
 // Errors
-void check_argc_quantity(int argc);
-void check_if_file_exists(char **argv, int fd);
-void line_not_valid_error(int n);
-void file_is_empty_error(char **argv);
-void check_line_for_errors(char *line);
-void check_sum_of_bridges(int sum, int dis);
-void error_duplicate_Bridges();
-void error_inv_num_of_islands();
-void error_inv_num_of_islands2(int size, char **islands);
+void mx_error_usage(int argc);
+void mx_error_file_exists(char **argv, int fd);
+void mx_error_line_not_valid(int n);
+void mx_error_file_is_empty(char **argv);
+void mx_error_sum_of_bridges(int sum, int dis);
+void mx_error_duplicate();
+void mx_error_inv_num_islands();
+void mx_error_inv_num_islands2(t_data *strct);
 
-// Parse
-int get_fd(char **argv);
-int parse_first_line(int fd, char **argv);
-void prefill_matrix(int *graph, int size);
-void fill_matrix(int *graph, int size, char **islands, int fd);
+// Memory
+void mx_alloc_dist(t_data *strct);
+void mx_alloc_route(t_data *strct);
+void mx_alloc_graph(t_data *strct);
+char **mx_alloc_str_array(int size);
+void mx_clean_up(t_data *strct);
 
-void floyd_warshall(int *graph, int size, char **islands);
+// Parsing files
+int mx_parse_first_line(int fd, char **argv);
+void mx_parse_vertices(t_data *strct, int fd);
 
+// Floyd_Warshall
+void floyd_warshall(t_data *strct);
 
 // Printing data
-void print_routes(int *dis, int *next, int size, char **islands);
-void print_list(t_list* head);
+void mx_print_output(t_data *strct);
+
+// Backtracking
+void mx_find_all_paths(t_data *strct, int st, int end);
+void mx_back_path(t_data *strct, t_backtrack *stack);
+void mx_ret_trip_output(t_data *strct, t_backtrack *stack);
 
 #endif //PATHFINDER_PATHFINDER_H

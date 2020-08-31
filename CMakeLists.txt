@@ -79,10 +79,37 @@ add_executable(Pathfinder
         inc/pathfinder.h
 
         src/main.c
-        src/errors1.c
-        src/parse_first_line.c
-        src/temp_file.c     # Must be removed later
-        src/floyd_warshall.c
-        src/output.c
 
+        src/mx_parse_first_line.c
+
+        src/mx_floyd_warshall.c
+
+        # Errors
+        src/mx_error_usage.c
+        src/mx_error_file_is_empty.c
+        src/mx_error_line_not_valid.c
+        src/mx_error_file_exists.c
+        src/mx_error_inv_num_islands.c
+        src/mx_error_inv_num_islands2.c
+        src/mx_error_duplicate.c
+        src/mx_error_sum_of_bridges.c
+
+
+        # Parse
+        src/mx_parse_vertices.c
+
+
+        # Memory
+        src/mx_alloc_dist.c
+        src/mx_alloc_graph.c
+        src/mx_alloc_route.c
+        src/mx_alloc_str_array.c
+        src/mx_alloc_clean_up.c
+
+
+        src/mx_bt_find_all_paths.c
+        src/mx_bt_back_path.c
+        src/mx_bt_trip_output.c
+
+        src/mx_print_output.c
         )

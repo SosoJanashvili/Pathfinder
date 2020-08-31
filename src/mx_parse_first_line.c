@@ -4,7 +4,7 @@
 
 #include "../inc/pathfinder.h"
 
-int parse_first_line(int fd, char **argv) {
+int mx_parse_first_line(int fd, char **argv) {
 
     char *s = NULL;
     int v_quantity;
