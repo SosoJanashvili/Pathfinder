@@ -12,7 +12,7 @@ char *mx_strndup(const char *s1, size_t n) {
             return NULL;
         return str;
     }
-    len = mx_strlen(s1) < n ? mx_strlen(s1) : n;
+    len = (size_t)mx_strlen(s1) < n ? (size_t)mx_strlen(s1) : n;
 
     if (!(str = mx_strnew(len)))
         return NULL;
