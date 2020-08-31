@@ -1,87 +1,68 @@
-# name of binary
-NAME		= pathfinder
+NAME	=	pathfinder
 
-# main dir for source files
-SRC_DIR		= src/
-# main dir for obj files
-OBJ_DIR		= obj/
-# main dir for header files
-INC_DIR		= inc/
-# list of subdirs in src/
-DIRS		= $(notdir $(wildcard $(SRC_DIR)*))
-# list of only source C-files without extansions
-FILES		= $(foreach dir, $(DIRS), $(basename $(wildcard \
-			  $(SRC_DIR)$(dir)/*.c)))
-# adding extansions .c to FILES
-SRC			= $(FILES:%=%.c)
-# adding extansions .o to FILES
-OBJ			= $(SRC:src/%.c=$(OBJ_DIR)%.o)
-# list of header files
-INC_H		= $(wildcard $(INC_DIR)*.h)
+CFLG	=	-std=c11 $(addprefix -W, all extra error pedantic)
+
+SRCD	=	src
+INCD	=	inc
+OBJD	=	obj
+
+LMXD	=	libmx
+LMXA:=	$(LMXD)/libmx.a
+LMXI:=	$(LMXD)/inc
+
+INC		=	pathfinder.h
+INCS	=	$(addprefix $(INCD)/, $(INC))
+
+SRC	= 		main.c\
+        	mx_alloc_clean_up.c\
+        	mx_alloc_dist.c\
+        	mx_alloc_graph.c\
+        	mx_alloc_route.c\
+        	mx_alloc_str_array.c\
+        	mx_bt_back_path.c\
+        	mx_bt_find_all_paths.c\
+        	mx_bt_trip_output.c\
+        	mx_error_duplicate.c\
+        	mx_error_file_exists.c\
+        	mx_error_file_is_empty.c\
+        	mx_error_inv_num_islands.c\
+        	mx_error_inv_num_islands2.c\
+        	mx_error_line_not_valid.c\
+        	mx_error_sum_of_bridges.c\
+        	mx_error_usage.c\
+        	mx_floyd_warshall.c\
+        	mx_parse_first_line.c\
+        	mx_parse_vertices.c\
+        	mx_print_output.c
 
 
-# main dir with any libraries
-LIB_DIR		= .
-# list of all names of libraries in LIB_DIR
-LIB_LIST	= libmx
-# make path to library ../libs/<lib_name>/
-LIB_DIRS	= $(foreach libdirs, $(LIB_LIST), $(LIB_DIR)/$(libdirs)/)
-# make path to ../libs/<lib_name>/<lib_name>.a
-LIB_BIN		= $(join $(LIB_DIRS), $(addsuffix .a, $(LIB_LIST)))
-# make path to ../libs/<lib_name>/inc
-LIB_INC		= $(addsuffix $(INC_DIR), $(LIB_DIRS))
+SRCS	=	$(addprefix $(SRCD)/, $(SRC))
+OBJS	=	$(addprefix $(OBJD)/, $(SRC:%.c=%.o))
+
+all: install
+
+install: $(LMXA) $(NAME)
+
+$(NAME): $(OBJS)
+	@clang $(CFLG) $(OBJS) -L$(LMXD) -lmx -o $@
+
+$(OBJD)/%.o: $(SRCD)/%.c $(INCS)
+	@clang $(CFLG) -c $< -o $@ -I$(INCD) -I$(LMXI)
 
 
-# compiler
-CC			= clang
-# general flags
-GFLAGS		= -std=c11 -pipe -Wall -Wextra -Werror -Wpedantic\
-	-Wno-unused-command-line-argument -Wno-unused-variable \
-	-Wno-unused-function -Wno-unused-parameter -g
-# specific flags
-#CFLAGS		= -lsqlite3 -lpthread
-# folder with header files
-IFLAGS		= $(addprefix -I, $(LIB_INC) $(INC_DIR))
+$(OBJS): | $(OBJD)
 
-COMPILE		= $(CC) $(GFLAGS) $(IFLAGS) $(LIB_BIN)
-# -s(silent) -f() -C(launch from another folder)
-MAKE_M		= make -sf Makefile -C
-MKDIR		= mkdir -p
-RM			= /bin/rm -rf
+$(OBJD):
+	@mkdir -p $@
 
-# checking if libs are up to date
-all: $(NAME)
-
-# LIB_BIN for libs dependency
-$(NAME): $(LIB_LIST) $(OBJ_DIR) $(OBJ)
-	@$(COMPILE) $(OBJ) -lmx -o $(NAME)
-	@printf "\r\33[2K$@ \033[32;1mcreated\033[0m\n"
-
-$(LIB_BIN): $(LIB_LIST)
-
-# make for all libs
-$(LIB_LIST): $(LIB_DIRS)
-	@$(MAKE_M) $(LIB_DIR)/$@
-
-# make dirs for obj files
-$(OBJ_DIR):
-	@$(MKDIR) $@ $(foreach dir, $(DIRS), $@/$(dir))
-
-# comling obj files
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_H) $(LIB_BIN)
-	@$(COMPILE) -o $@ -c $<
-	@printf "\r\33[2K$(NAME) \033[33;1mcompile \033[0m$(<:$(SRC_DIR)/%.c=%)"
-
+$(LMXA):
+	@make -sC $(LMXD)
 clean:
-	@$(MAKE_M) $(LIB_DIR)/$(LIB_LIST) $@
-	@$(RM) $(OBJ_DIR)
-	@printf "obj in $(NAME)\t \033[31;1mdeleted\033[0m\n"
+	@make -sC $(LMXD) $@
+	@rm -rf $(OBJD)
 
-uninstall:
-	@$(MAKE_M) $(LIB_DIR)/$(LIB_LIST) $@
-	@$(RM) $(OBJ_DIR) $(NAME)
-	@printf "$(NAME)\t \033[31;1muninstalled\033[0m\n"
+uninstall: clean
+	@make -sC $(LMXD) $@
+	@rm -rf $(NAME)
 
-reinstall: uninstall all
-
-.PHONY: all clean uninstall reinstall $(LIB_LIST)
+reinstall: uninstall install

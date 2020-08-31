@@ -5,8 +5,10 @@
 #include "../inc/libmx.h"
 
 void mx_printerror(const char *s) {
-    if (!s) {
+
+    if (!s)
         return;
-    }
+
     write(2, s, mx_strlen(s));
+
 }

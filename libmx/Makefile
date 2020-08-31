@@ -64,6 +64,8 @@ SRC = mx_printchar.c \
 	mx_pop_front.c \
 	mx_pop_back.c \
 	mx_list_size.c \
+	mx_printerror.c \
+	mx_read_line.c \
 
 
 INCLUDE = -I $(INCD) \
