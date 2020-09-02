@@ -50,10 +50,10 @@ static void send_num_to_matrix(t_data *strct, char*isl1, char *isl2, int *distan
     int i = 0;
     int j = 0;
 
-    while (strcmp(islands[i], isl1) != 0 && islands[i])
+    while (mx_strcmp(islands[i], isl1) != 0 && islands[i])
         i++;
 
-    while (strcmp(islands[j], isl2) != 0 && islands[j])
+    while (mx_strcmp(islands[j], isl2) != 0 && islands[j])
         j++;
 
     if (strct->graph[i][j] == INF) {
