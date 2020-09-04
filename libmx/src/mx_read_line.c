@@ -15,7 +15,7 @@ static int append_line(char **lineptr, char delim, const int fd, char **s) {
         if (s[fd][0] == '\0')
             mx_strdel(&s[fd]);
     } else {
-        *lineptr = strdup(s[fd]);
+        *lineptr = mx_strdup(s[fd]);
         mx_strdel(&s[fd]);
     }
     return len;
